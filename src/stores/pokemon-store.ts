@@ -62,15 +62,17 @@ export const usePokemonStore = defineStore('pokemon', {
       }
     },
 
-    async loadPokemonData(pokemon: string | number) {
-      instance
-        .get(`${baseUrl}${pokemon}`)
-        .then((response: AxiosResponse<IPokemon>) => {
-          this.pokemonData[response.data.id] = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    async loadPokemonData(pokemon: number) {
+      if (this.pokemonData[pokemon] === undefined) {
+        instance
+          .get(`${baseUrl}${pokemon}`)
+          .then((response: AxiosResponse<IPokemon>) => {
+            this.pokemonData[response.data.id] = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
   },
 });
