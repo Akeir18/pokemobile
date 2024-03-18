@@ -14,7 +14,6 @@
 <script setup lang="ts">
 import ListPokemon from 'src/components/ListPokemon.vue';
 import { usePokemonStore } from 'src/stores/pokemon-store';
-import { onMounted } from 'vue';
 
 const store = usePokemonStore();
 
