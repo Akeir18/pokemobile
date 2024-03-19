@@ -8,10 +8,10 @@
       </q-item-section>
       <q-item-section>
         <q-item-label>
-          {{ pokemon.id }}
-          {{ pokemon.name }}
+          #{{ pad(pokemon.id, 4) }}
+          {{ capitalize(pokemon.name) }}
           <q-chip v-for="typeInfo in pokemon.types" :key="typeInfo.slot">
-            {{ typeInfo.type.name }}
+            {{ capitalize(typeInfo.type.name) }}
           </q-chip>
         </q-item-label>
       </q-item-section>
@@ -20,7 +20,9 @@
 </template>
 
 <script setup>
+import { format } from 'quasar';
 import { defineProps, toRefs } from 'vue';
+
 const props = defineProps({
   pokemons: {
     type: Object,
@@ -28,4 +30,6 @@ const props = defineProps({
   },
 });
 const { pokemons } = toRefs(props);
+
+const { pad, capitalize } = format;
 </script>

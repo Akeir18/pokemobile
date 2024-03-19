@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <q-infinite-scroll @load="loadPokemons">
-      <list-pokemon :pokemons="store.pokemonData" />
+      <list-item-pokemon :pokemons="store.pokemonData" />
       <template #loading>
         <div class="row justify-center q-my-md">
           <q-spinner-dots color="primary" size="40px" />
@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import ListPokemon from 'src/components/ListPokemon.vue';
+import ListItemPokemon from 'src/components/ListItemPokemon.vue';
 import { usePokemonStore } from 'src/stores/pokemon-store';
 
 const store = usePokemonStore();
