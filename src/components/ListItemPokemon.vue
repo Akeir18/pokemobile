@@ -10,7 +10,11 @@
         <q-item-label>
           #{{ pad(pokemon.id, 4) }}
           {{ capitalize(pokemon.name) }}
-          <q-chip v-for="typeInfo in pokemon.types" :key="typeInfo.slot">
+          <q-chip
+            v-for="typeInfo in pokemon.types"
+            :key="typeInfo.slot"
+            :class="typeInfo.type.name"
+          >
             {{ capitalize(typeInfo.type.name) }}
           </q-chip>
         </q-item-label>
