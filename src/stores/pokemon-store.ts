@@ -17,6 +17,7 @@ instance.interceptors.response.use(
     // If an error occurs
     if (error.response && error.response.status === 404) {
       // Handle 404 errors here
+      // TODO
       Dialog.create({
         title: 'Error',
         message: 'todo.pokemonNotFound',
