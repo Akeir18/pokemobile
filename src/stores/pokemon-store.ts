@@ -38,7 +38,7 @@ export const usePokemonStore = defineStore('pokemon', {
   actions: {
     async loadPokemonList() {
       if (this.pokemonList.count === undefined) {
-        instance
+        await instance
           .get(`${baseUrl}`, {
             params: {
               limit: 1000000,
@@ -65,7 +65,7 @@ export const usePokemonStore = defineStore('pokemon', {
 
     async loadPokemonData(pokemon: number) {
       if (this.pokemonData[pokemon] === undefined) {
-        instance
+        await instance
           .get(`${baseUrl}${pokemon}`)
           .then((response: AxiosResponse<IPokemon>) => {
             this.pokemonData[response.data.id] = response.data;
