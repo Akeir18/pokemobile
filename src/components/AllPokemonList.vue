@@ -1,6 +1,26 @@
 <template>
+  <div class="q-my-md">
+    <q-btn-group>
+      <q-btn
+        color="primary"
+        icon="list"
+        @click="switchComponent(listComponent)"
+      />
+      <q-btn
+        color="primary"
+        icon="grid_view"
+        @click="switchComponent(cardComponent)"
+      />
+    </q-btn-group>
+  </div>
+
   <q-infinite-scroll @load="loadPokemons">
-    <list-item-pokemon :pokemons="pokemons" />
+    <component
+      :is="pokemonComponent"
+      v-if="pokemons !== null"
+      :pokemons="pokemons"
+    />
+    <!-- <list-card-pokemon :pokemons="pokemons" /> -->
     <template #loading>
       <div class="row justify-center q-my-md">
         <q-spinner-dots color="primary" size="40px" />
@@ -12,10 +32,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { IPokemonListItem } from 'src/interfaces/IPokemonListItem';
-import ListItemPokemon from './ListItemPokemon.vue';
 import usePokemonStore from 'src/stores/pokemon-store';
 import { useTypeStore } from 'src/stores/type-store';
 import { onMounted } from 'vue';
+import { ref } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
 const store = usePokemonStore();
 const typeStore = useTypeStore();
@@ -48,7 +69,16 @@ const pokemons = computed(() => {
   return pokemon;
 });
 
+const listComponent = './ListPokemon.vue';
+const cardComponent = './CardPokemon.vue';
+const pokemonComponent = ref();
+
+const switchComponent = (component: string) => {
+  pokemonComponent.value = defineAsyncComponent(() => import(component));
+};
+
 onMounted(async () => {
   await typeStore.loadTypeData();
+  switchComponent(listComponent);
 });
 </script>
