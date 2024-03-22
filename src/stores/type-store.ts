@@ -21,7 +21,7 @@ instance.interceptors.response.use(
       // TODO
       Dialog.create({
         title: 'Error',
-        message: 'todo.typeNotFound',
+        message: 'typeNotFound',
       });
     }
     // Pass the error to the next catch block

@@ -20,7 +20,7 @@ instance.interceptors.response.use(
       // TODO
       Dialog.create({
         title: 'Error',
-        message: 'todo.pokemonNotFound',
+        message: 'pokemonNotFound',
       });
     }
     // Pass the error to the next catch block
