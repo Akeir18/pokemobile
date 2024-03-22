@@ -1,9 +1,10 @@
-import { ITypeArray } from './../interfaces/ITypeArray';
-import { ITypeList } from './../interfaces/ITypeList';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
 import { Dialog } from 'quasar';
 import { IType } from 'src/interfaces/IType';
+import { useI18n } from 'vue-i18n';
+import { ITypeArray } from './../interfaces/ITypeArray';
+import { ITypeList } from './../interfaces/ITypeList';
 
 // Creating the axios instance to create the interceptors
 const instance = axios.create();
@@ -39,8 +40,9 @@ export const useTypeStore = defineStore('counter', {
     // TODO GETTER THAT SEARCH BY THE LANGUAGE SO I CAN GET EASILY THE NAME
     getNameByLanguage: (state) => {
       return (type: string) => {
+        const { locale } = useI18n();
         const typeName = Object.values(state.typeData[type]?.names).find(
-          (item) => item.language.name === 'es'
+          (item) => item.language.name === locale.value
         );
         return typeName?.name || type;
       };
