@@ -1,5 +1,8 @@
 <template>
-  <div class="q-my-md">
+  <div class="q-my-md flex justify-between items-center">
+    <p class="q-ma-none">
+      {{ $t('todo.allPokemon') }}: {{ store.pokemonList.count }}
+    </p>
     <q-btn-group>
       <q-btn
         color="primary"
@@ -78,6 +81,7 @@ const switchComponent = (component: string) => {
 };
 
 onMounted(async () => {
+  await store.loadPokemonList();
   await typeStore.loadTypeData();
   switchComponent(listComponent);
 });
