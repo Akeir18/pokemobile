@@ -9,6 +9,7 @@
       padding
     >
       <the-navbar />
+      <the-language-switcher class="q-mx-md" />
     </q-drawer>
 
     <q-page-container>
@@ -21,6 +22,7 @@
 import { ref } from 'vue';
 import TheHeader from 'src/components/TheHeader.vue';
 import TheNavbar from 'src/components/TheNavbar.vue';
+import TheLanguageSwitcher from 'src/components/TheLanguageSwitcher.vue';
 
 const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => {

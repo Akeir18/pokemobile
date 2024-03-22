@@ -1,7 +1,7 @@
 <template>
   <div class="q-my-md flex justify-between items-center">
     <p class="q-ma-none">
-      {{ $t('todo.allPokemon') }}: {{ store.pokemonList.count }}
+      {{ $t('allPokemon') }}: {{ store.pokemonList.count }}
     </p>
     <q-btn-group>
       <q-btn
