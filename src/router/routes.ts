@@ -3,8 +3,20 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
+    name: 'home',
+    redirect: { name: 'allPokemon' },
+  },
+  {
+    path: '/pokemon',
+    name: 'pokemon',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [
+      {
+        path: '',
+        name: 'allPokemon',
+        component: () => import('pages/AllPokemonPage.vue'),
+      },
+    ],
   },
 
   // Always leave this as last one,
