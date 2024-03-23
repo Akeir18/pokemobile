@@ -10,9 +10,14 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 import IOption from 'src/interfaces/IOption';
-import { useQuasar } from 'quasar';
+import useLocaleStore from 'src/stores/locale-store';
+import { watch } from 'vue';
+
+const store = useLocaleStore();
+
 const { locale } = useI18n({ useScope: 'global' });
 const i18n = useI18n();
+
 let options: Array<IOption> = [];
 for (const locale of i18n.availableLocales) {
   options.push({
@@ -20,9 +25,13 @@ for (const locale of i18n.availableLocales) {
     value: locale,
   });
 }
-const $q = useQuasar();
-const detectedLocale: string = $q.lang.getLocale() ?? '';
-if (i18n.availableLocales.includes(detectedLocale)) {
-  locale.value = detectedLocale;
+
+// If the locale changes, we update it at the store
+watch(locale, (newLocale) => {
+  store.locale = newLocale;
+});
+
+if (store.locale.length > 0) {
+  locale.value = store.locale;
 }
 </script>
