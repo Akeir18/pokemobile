@@ -39,7 +39,7 @@ import { useTypeStore } from 'src/stores/type-store';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { defineAsyncComponent } from 'vue';
-import { getIdFromUrl } from 'src/composables/pokemonId';
+import getIdFromUrl from 'src/composables/pokemonId';
 
 const store = usePokemonStore();
 const typeStore = useTypeStore();
