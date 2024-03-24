@@ -39,37 +39,43 @@ import { useTypeStore } from 'src/stores/type-store';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { defineAsyncComponent } from 'vue';
-import getIdFromUrl from 'src/composables/pokemonId';
+import { toRefs } from 'vue';
+
+const props = defineProps({
+  list: { type: Array<number>, required: true },
+});
+const { list } = toRefs(props);
+const emit = defineEmits(['load']);
 
 const store = usePokemonStore();
 const typeStore = useTypeStore();
 
+// Functions that load the store
 const loadPokemons = async (index: number, done: CallableFunction) => {
-  await store.loadPokemonList(10, index);
-  store.pokemonList.results.forEach((pokemon) => {
-    const id = getIdFromUrl(pokemon.url);
-    store.loadPokemonData(id);
-  });
+  emit('load', index);
   done();
 };
 
+// Functions that load the pokemon component
 const pokemons = computed(() => {
   let pokemon = <Array<IPokemonListItem>>[];
-  for (const pokemonId in store.pokemonData) {
-    const types = <Array<string>>[];
-    // In order to get only the name of the type to make it easy to use it on the render site we're gonna take only the names
-    store.pokemonData[pokemonId].types.forEach((type) => {
-      if (typeStore.typeData[type.type.name] !== undefined) {
-        types.push(type.type.name);
-      }
-    });
-    // Getting the needed info only
-    pokemon.push({
-      id: store.pokemonData[pokemonId].id,
-      name: store.pokemonData[pokemonId].name,
-      sprite: store.pokemonData[pokemonId].sprites.front_default,
-      types: types,
-    });
+  for (const pokemonId of list.value) {
+    if (store.pokemonData[pokemonId] !== undefined) {
+      const types = <Array<string>>[];
+      // In order to get only the name of the type to make it easy to use it on the render site we're gonna take only the names
+      store.pokemonData[pokemonId].types.forEach((type) => {
+        if (typeStore.typeData[type.type.name] !== undefined) {
+          types.push(type.type.name);
+        }
+      });
+      // Getting the needed info only
+      pokemon.push({
+        id: store.pokemonData[pokemonId].id,
+        name: store.pokemonData[pokemonId].name,
+        sprite: store.pokemonData[pokemonId].sprites.front_default,
+        types: types,
+      });
+    }
   }
   return pokemon;
 });
