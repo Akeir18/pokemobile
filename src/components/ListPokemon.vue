@@ -8,7 +8,9 @@
       </q-item-section>
       <q-item-section>
         <q-item-label>
-          #{{ pad(pokemon.id, 4) }}
+          <span v-if="pokedex !== undefined">
+            #{{ pad(pokemon.pokedex, 4) }}
+          </span>
           {{ capitalize(pokemon.name) }}
           <!-- {{ pokemon.types }} -->
           <!-- {{ store.getNameByLanguage('normal') }} -->
