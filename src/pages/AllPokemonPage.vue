@@ -1,9 +1,9 @@
 <template>
   <q-page padding>
-    <all-pokemon-list />
+    <display-pokemon-group />
   </q-page>
 </template>
 
 <script setup lang="ts">
-import AllPokemonList from 'src/components/AllPokemonList.vue';
+import DisplayPokemonGroup from 'src/components/DisplayPokemonGroup.vue';
 </script>
