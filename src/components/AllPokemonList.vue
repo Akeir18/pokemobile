@@ -23,7 +23,6 @@
       v-if="pokemons !== null"
       :pokemons="pokemons"
     />
-    <!-- <list-card-pokemon :pokemons="pokemons" /> -->
     <template #loading>
       <div class="row justify-center q-my-md">
         <q-spinner-dots color="primary" size="40px" />
@@ -40,13 +39,17 @@ import { useTypeStore } from 'src/stores/type-store';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { defineAsyncComponent } from 'vue';
+import { getIdFromUrl } from 'src/composables/pokemonId';
 
 const store = usePokemonStore();
 const typeStore = useTypeStore();
 
 const loadPokemons = async (index: number, done: CallableFunction) => {
-  await store.loadPokemonDataGrouped(10, index);
-
+  await store.loadPokemonList(10, index);
+  store.pokemonList.results.forEach((pokemon) => {
+    const id = getIdFromUrl(pokemon.url);
+    store.loadPokemonData(id);
+  });
   done();
 };
 
@@ -60,7 +63,6 @@ const pokemons = computed(() => {
         types.push(type.type.name);
       }
     });
-
     // Getting the needed info only
     pokemon.push({
       id: store.pokemonData[pokemonId].id,
@@ -81,7 +83,6 @@ const switchComponent = (component: string) => {
 };
 
 onMounted(async () => {
-  await store.loadPokemonList();
   await typeStore.loadTypeData();
   switchComponent(listComponent);
 });
