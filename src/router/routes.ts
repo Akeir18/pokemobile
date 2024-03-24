@@ -8,13 +8,28 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/pokemon',
-    name: 'pokemon',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         name: 'allPokemon',
         component: () => import('pages/AllPokemonPage.vue'),
+      },
+    ],
+  },
+  {
+    path: '/pokedex',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'allPokedex',
+        component: () => import('pages/AllPokedexPage.vue'),
+      },
+      {
+        path: ':id',
+        name: 'pokedex',
+        component: () => import('pages/PokedexPage.vue'),
       },
     ],
   },

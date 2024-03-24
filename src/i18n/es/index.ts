@@ -5,7 +5,9 @@ export default {
   en: 'English',
   es: 'Español',
   allPokemon: 'Todos los pokémon',
+  allPokedex: 'Todas las pokédex',
   pokemon: 'Pokémon',
   pokemonNotFound: 'No se han encontrado pokémon',
   typeNotFound: 'No se han encontrado tipos',
+  pokedexNotFound: 'No se han encontrado pokedex',
 };

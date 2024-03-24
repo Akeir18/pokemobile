@@ -4,8 +4,10 @@
 export default {
   en: 'English',
   es: 'Español',
-  allPokemon: 'All pokemon',
+  allPokemon: 'All pokemons',
+  allPokedex: 'All pokedexes',
   pokemon: 'Pokemon',
   pokemonNotFound: 'Pokemon not found',
   typeNotFound: 'Type not found',
+  pokedexNotFound: 'Pokedex not found',
 };
