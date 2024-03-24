@@ -34,8 +34,6 @@ const props = defineProps({
   },
 });
 const { pokemons } = toRefs(props);
-console.log('🚀 ~ pokemons:', pokemons);
-
 const { pad, capitalize } = format;
 
 const store = useTypeStore();
