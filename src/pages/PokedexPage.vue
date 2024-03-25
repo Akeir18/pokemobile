@@ -22,13 +22,13 @@ import usePokedexStore from 'src/stores/pokedex-store';
 import { PokemonEntry } from 'src/interfaces/IPokedex';
 import getIdFromUrl from 'src/composables/pokemonId';
 import usePokemonStore from 'src/stores/pokemon-store';
-import { ref } from 'vue';
 import { computed } from 'vue';
+import { shallowRef } from 'vue';
 
 const pokedexId = parseInt(useRoute().params.id as string);
 const store = usePokedexStore();
 const pokemonStore = usePokemonStore();
-const pokemonList = <Ref<Array<number>>>ref([]);
+const pokemonList = <Ref<Array<number>>>shallowRef([]);
 const pokemonCount = computed(() => {
   if (store.pokedexData[pokedexId] !== undefined) {
     return store.pokedexData[pokedexId].pokemon_entries.length;
