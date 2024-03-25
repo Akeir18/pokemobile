@@ -1,6 +1,10 @@
 <template>
   <q-page padding>
-    <display-pokemon-group :list="pokemonList" @load="loadPokemons" />
+    <display-pokemon-group
+      :count="store.pokemonList.count"
+      :list="pokemonList"
+      @load="loadPokemons"
+    />
   </q-page>
 </template>
 

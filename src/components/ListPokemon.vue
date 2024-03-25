@@ -8,7 +8,7 @@
       </q-item-section>
       <q-item-section>
         <q-item-label>
-          <span v-if="pokedex !== undefined">
+          <span v-if="pokemon.pokedex !== 0">
             #{{ pad(pokemon.pokedex, 4) }}
           </span>
           {{ capitalize(pokemon.name) }}

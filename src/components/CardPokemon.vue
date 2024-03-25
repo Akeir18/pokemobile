@@ -9,7 +9,10 @@
 
       <q-card-section>
         <div class="text-h6 text-center">
-          #{{ pad(pokemon.id, 4) }} {{ capitalize(pokemon.name) }}
+          <span v-if="pokemon.pokedex !== 0">
+            #{{ pad(pokemon.pokedex, 4) }}
+          </span>
+          {{ capitalize(pokemon.name) }}
         </div>
         <div class="text-subtitle2 text-center">
           <q-chip v-for="type in pokemon.types" :key="type" :class="type">

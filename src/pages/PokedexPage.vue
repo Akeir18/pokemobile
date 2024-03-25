@@ -1,35 +1,54 @@
 <template>
   <q-page padding>
-    <display-pokemon-group :list="pokemonList" @load="loadPokemons" />
+    <display-pokemon-group
+      :count="pokemonCount"
+      :list="pokemonList"
+      :pokedex-id="pokedexId"
+      @load="loadPokemons"
+    />
   </q-page>
 </template>
 
 <script setup lang="ts">
 import DisplayPokemonGroup from 'src/components/DisplayPokemonGroup.vue';
-import usePokemonStore from 'src/stores/pokemon-store';
+import { Ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { onMounted } from 'vue';
+import usePokedexStore from 'src/stores/pokedex-store';
+import { PokemonEntry } from 'src/interfaces/IPokedex';
 import getIdFromUrl from 'src/composables/pokemonId';
+import usePokemonStore from 'src/stores/pokemon-store';
+import { ref } from 'vue';
 import { computed } from 'vue';
 
-const store = usePokemonStore();
-
-const pokemonList = computed(() => {
-  const list = <Array<number>>[];
-
-  if (store.pokemonList.results !== undefined) {
-    store.pokemonList.results.forEach((pokemon) => {
-      list.push(getIdFromUrl(pokemon.url));
-      return;
-    });
+const pokedexId = parseInt(useRoute().params.id as string);
+const store = usePokedexStore();
+const pokemonStore = usePokemonStore();
+const pokemonList = <Ref<Array<number>>>ref([]);
+const pokemonCount = computed(() => {
+  if (store.pokedexData[pokedexId] !== undefined) {
+    return store.pokedexData[pokedexId].pokemon_entries.length;
   }
-  return list;
+  return 0;
 });
 
 // Functions that load the store
 const loadPokemons = async (index: number) => {
-  await store.loadPokemonList(10, index);
-  store.pokemonList.results.forEach((pokemon) => {
-    const id = getIdFromUrl(pokemon.url);
-    store.loadPokemonData(id);
-  });
+  if (store.pokedexData[pokedexId] !== undefined) {
+    const iterationArray = store.pokedexData[pokedexId].pokemon_entries.slice(
+      0,
+      10 * index
+    );
+    pokemonList.value = [];
+    iterationArray.forEach((pokemon: PokemonEntry) => {
+      const id = getIdFromUrl(pokemon.pokemon_species.url);
+      pokemonStore.loadPokemonData(id);
+      pokemonList.value.push(id);
+    });
+  }
 };
+
+onMounted(async () => {
+  await store.loadPokedexData(pokedexId);
+});
 </script>

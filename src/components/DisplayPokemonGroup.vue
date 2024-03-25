@@ -1,16 +1,14 @@
 <template>
   <div class="q-my-md flex justify-between items-center">
-    <p class="q-ma-none">
-      {{ $t('allPokemon') }}: {{ store.pokemonList.count }}
-    </p>
+    <p class="q-ma-none">{{ $t('allPokemon') }}: {{ count }}</p>
     <q-btn-group>
       <q-btn
-        color="primary"
+        color="accent"
         icon="list"
         @click="switchComponent(listComponent)"
       />
       <q-btn
-        color="primary"
+        color="accent"
         icon="grid_view"
         @click="switchComponent(cardComponent)"
       />
@@ -24,7 +22,7 @@
       :pokemons="pokemons"
     />
     <template #loading>
-      <div class="row justify-center q-my-md">
+      <div class="row justify-center q-my-md" v-if="count > list.length">
         <q-spinner-dots color="primary" size="40px" />
       </div>
     </template>
@@ -37,23 +35,33 @@ import { IPokemonListItem } from 'src/interfaces/IPokemonListItem';
 import usePokemonStore from 'src/stores/pokemon-store';
 import { useTypeStore } from 'src/stores/type-store';
 import { onMounted } from 'vue';
-import { ref } from 'vue';
 import { defineAsyncComponent } from 'vue';
 import { toRefs } from 'vue';
+import usePokedexStore from 'src/stores/pokedex-store';
+import { shallowRef } from 'vue';
 
 const props = defineProps({
+  count: { type: Number, required: true },
   list: { type: Array<number>, required: true },
+  pokedexId: { type: Number, required: false, default: null },
 });
-const { list } = toRefs(props);
+const { count, list, pokedexId } = toRefs(props);
 const emit = defineEmits(['load']);
 
 const store = usePokemonStore();
 const typeStore = useTypeStore();
+const pokedexStore = usePokedexStore();
 
 // Functions that load the store
 const loadPokemons = async (index: number, done: CallableFunction) => {
-  emit('load', index);
-  done();
+  if (count.value === 0) {
+    done();
+  }
+
+  if (count.value !== list.value.length) {
+    emit('load', index);
+    done();
+  }
 };
 
 // Functions that load the pokemon component
@@ -71,6 +79,13 @@ const pokemons = computed(() => {
       // Getting the needed info only
       pokemon.push({
         id: store.pokemonData[pokemonId].id,
+        pokedex:
+          pokedexId.value !== null
+            ? pokedexStore.getPokedexNumber(
+                pokedexId.value,
+                store.pokemonData[pokemonId].name
+              )
+            : 0,
         name: store.pokemonData[pokemonId].name,
         sprite: store.pokemonData[pokemonId].sprites.front_default,
         types: types,
@@ -82,7 +97,7 @@ const pokemons = computed(() => {
 
 const listComponent = './ListPokemon.vue';
 const cardComponent = './CardPokemon.vue';
-const pokemonComponent = ref();
+const pokemonComponent = shallowRef();
 
 const switchComponent = (component: string) => {
   pokemonComponent.value = defineAsyncComponent(() => import(component));

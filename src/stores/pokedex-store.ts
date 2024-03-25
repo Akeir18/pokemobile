@@ -39,41 +39,55 @@ export const usePokedexStore = defineStore('pokedex', {
   getters: {
     getNameByLanguage: (state) => {
       return (pokedexNumber: number) => {
-        const { locale } = useI18n();
+        if (state.pokedexData[pokedexNumber] !== undefined) {
+          const { locale } = useI18n();
 
-        const pokedexLang = Object.values(
-          state.pokedexData[pokedexNumber]?.names
-        ).find((item) => item.language.name === locale.value);
-        // Locale pokedex name
-        if (pokedexLang !== undefined) {
-          return pokedexLang?.name;
+          const pokedexLang = Object.values(
+            state.pokedexData[pokedexNumber]?.names
+          ).find((item) => item.language.name === locale.value);
+          // Locale pokedex name
+          if (pokedexLang !== undefined) {
+            return pokedexLang?.name;
+          }
+
+          // If not found the locale pokedexname, we look for it in english and if not found, we set the base name
+          const pokedexEng = Object.values(
+            state.pokedexData[pokedexNumber]?.names
+          ).find((item) => item.language.name === 'en');
+          return pokedexEng?.name || state.pokedexData[pokedexNumber].name;
         }
-
-        // If not found the locale pokedexname, we look for it in english and if not found, we set the base name
-        const pokedexEng = Object.values(
-          state.pokedexData[pokedexNumber]?.names
-        ).find((item) => item.language.name === 'en');
-        return pokedexEng?.name || state.pokedexData[pokedexNumber].name;
       };
     },
 
     getDescriptionByLanguage: (state) => {
       return (pokedexNumber: number) => {
-        const { locale } = useI18n();
+        if (state.pokedexData[pokedexNumber] !== undefined) {
+          const { locale } = useI18n();
 
-        const pokedexLang = Object.values(
-          state.pokedexData[pokedexNumber]?.descriptions
-        ).find((item) => item.language.name === locale.value);
-        // Locale pokedex name
-        if (pokedexLang !== undefined) {
-          return pokedexLang?.description;
+          const pokedexLang = Object.values(
+            state.pokedexData[pokedexNumber]?.descriptions
+          ).find((item) => item.language.name === locale.value);
+          // Locale pokedex name
+          if (pokedexLang !== undefined) {
+            return pokedexLang?.description;
+          }
+
+          // If not found the locale pokedexname, we look for it in english and if not found, we set the base name
+          const pokedexEng = Object.values(
+            state.pokedexData[pokedexNumber]?.descriptions
+          ).find((item) => item.language.name === 'en');
+          return pokedexEng?.description || '';
         }
+      };
+    },
 
-        // If not found the locale pokedexname, we look for it in english and if not found, we set the base name
-        const pokedexEng = Object.values(
-          state.pokedexData[pokedexNumber]?.descriptions
-        ).find((item) => item.language.name === 'en');
-        return pokedexEng?.description || '';
+    getPokedexNumber: (state) => {
+      return (pokedexNumber: number, pokemonName: string) => {
+        const pokemon = state.pokedexData[pokedexNumber].pokemon_entries.find(
+          (item) => item.pokemon_species.name == pokemonName
+        );
+
+        return pokemon?.entry_number ?? 0;
       };
     },
   },
@@ -97,15 +111,6 @@ export const usePokedexStore = defineStore('pokedex', {
           });
       }
     },
-
-    // async loadPokemonDataGrouped(offset: number, index: number) {
-    //   // try {
-    //   let pokemonId = (index - 1) * offset + 1;
-    //   offset = pokemonId + offset;
-    //   for (pokemonId; pokemonId < offset; pokemonId++) {
-    //     await this.loadPokemonData(pokemonId);
-    //   }
-    // },
 
     async loadPokedexData(pokedex: number) {
       if (this.pokedexData[pokedex] === undefined) {
