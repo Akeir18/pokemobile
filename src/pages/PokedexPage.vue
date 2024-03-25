@@ -1,5 +1,9 @@
 <template>
   <q-page padding>
+    <p>{{ store.getNameByLanguage(pokedexId) }}</p>
+    <p>{{ store.getDescriptionByLanguage(pokedexId) }}</p>
+    <q-separator inset color="primary" />
+
     <display-pokemon-group
       :count="pokemonCount"
       :list="pokemonList"
