@@ -6,13 +6,13 @@
         color="accent"
         icon="list"
         data-cy="list-view"
-        @click="switchComponent(listComponent)"
+        @click="pokemonComponent = listComponent"
       />
       <q-btn
         color="accent"
         icon="grid_view"
         data-cy="grid-view"
-        @click="switchComponent(cardComponent)"
+        @click="pokemonComponent = cardComponent"
       />
     </q-btn-group>
   </div>
@@ -32,15 +32,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { IPokemonListItem } from 'src/interfaces/IPokemonListItem';
+import usePokedexStore from 'src/stores/pokedex-store';
 import usePokemonStore from 'src/stores/pokemon-store';
 import { useTypeStore } from 'src/stores/type-store';
-import { onMounted } from 'vue';
-import { defineAsyncComponent } from 'vue';
-import { toRefs } from 'vue';
-import usePokedexStore from 'src/stores/pokedex-store';
-import { shallowRef } from 'vue';
+import {
+  computed,
+  defineAsyncComponent,
+  onMounted,
+  shallowRef,
+  toRefs,
+} from 'vue';
 
 const props = defineProps({
   count: { type: Number, required: true },
@@ -97,16 +99,16 @@ const pokemons = computed(() => {
   return pokemon;
 });
 
-const listComponent = './ListPokemon.vue';
-const cardComponent = './CardPokemon.vue';
-const pokemonComponent = shallowRef();
+const listComponent = defineAsyncComponent(() => import('./ListPokemon.vue'));
+const cardComponent = defineAsyncComponent(() => import('./CardPokemon.vue'));
+const pokemonComponent = shallowRef(listComponent);
 
-const switchComponent = (component: string) => {
-  pokemonComponent.value = defineAsyncComponent(() => import(component));
-};
+// const switchComponent = (component: ) => {
+//   pokemonComponent.value = component;
+// };
 
 onMounted(async () => {
   await typeStore.loadTypeData();
-  switchComponent(listComponent);
+  // switchComponent(listComponent);
 });
 </script>
