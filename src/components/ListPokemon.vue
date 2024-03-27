@@ -8,11 +8,18 @@
       </q-item-section>
       <q-item-section>
         <q-item-label>
-          #{{ pad(pokemon.id, 4) }}
+          <span v-if="pokemon.pokedex !== 0">
+            #{{ pad(pokemon.pokedex, 4) }}
+          </span>
           {{ capitalize(pokemon.name) }}
           <!-- {{ pokemon.types }} -->
           <!-- {{ store.getNameByLanguage('normal') }} -->
-          <q-chip v-for="type in pokemon.types" :key="type" :class="type">
+          <q-chip
+            v-for="type in pokemon.types"
+            :key="type"
+            :class="type"
+            data-cy="chip-type"
+          >
             {{ getNameByLanguage(type) }}
           </q-chip>
         </q-item-label>
@@ -34,7 +41,6 @@ const props = defineProps({
   },
 });
 const { pokemons } = toRefs(props);
-console.log('🚀 ~ pokemons:', pokemons);
 
 const { pad, capitalize } = format;
 

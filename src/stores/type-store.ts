@@ -69,7 +69,6 @@ export const useTypeStore = defineStore('counter', {
               console.log(error);
             });
         });
-        console.log('test', this.typeData);
       }
     },
   },
