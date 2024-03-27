@@ -1,5 +1,5 @@
 [build]
-  command = "yarn dev"
+  command = "yarn build"
   publish = "dist/spa"
 
 [[redirects]]
