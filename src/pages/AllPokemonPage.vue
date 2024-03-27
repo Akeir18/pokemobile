@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <display-pokemon-group
-      :count="store.pokemonList.count"
+      :count="store.pokemonList.count ?? NaN"
       :list="pokemonList"
       @load="loadPokemons"
     />
