@@ -3,6 +3,7 @@
     v-model="locale"
     :options="options"
     :display-value="$t(`${locale}`)"
+    data-cy="language-switcher"
     emit-value
   />
 </template>

@@ -15,6 +15,27 @@
 //
 //
 // -- This is a child command --
+Cypress.Commands.add('openMenu', () => {
+  cy.get('aside.q-drawer').then(($drawer) => {
+    if (!Cypress.dom.isVisible($drawer)) {
+      cy.get('[data-cy="toggle-drawer"]').click();
+    }
+  });
+});
+Cypress.Commands.add('closeMenu', () => {
+  cy.get('.fullscreen').then(($fullscreen) => {
+    if (Cypress.dom.isVisible($fullscreen)) {
+      cy.get('.fullscreen').click();
+    }
+  });
+});
+
+Cypress.Commands.add('selectLanguage', (language) => {
+  cy.get('.q-menu .q-item').contains(language).click();
+  cy.get('[data-cy="language-switcher"]')
+    .find('span')
+    .should('have.text', language);
+});
 // Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
 //
 //
@@ -35,3 +56,5 @@
 //     }
 //   }
 // }
+
+export {};

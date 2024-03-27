@@ -15,7 +15,12 @@
           {{ capitalize(pokemon.name) }}
         </div>
         <div class="text-subtitle2 text-center">
-          <q-chip v-for="type in pokemon.types" :key="type" :class="type">
+          <q-chip
+            v-for="type in pokemon.types"
+            :key="type"
+            :class="type"
+            data-cy="chip-type"
+          >
             {{ getNameByLanguage(type) }}
           </q-chip>
         </div>

@@ -5,11 +5,13 @@
       <q-btn
         color="accent"
         icon="list"
+        data-cy="list-view"
         @click="switchComponent(listComponent)"
       />
       <q-btn
         color="accent"
         icon="grid_view"
+        data-cy="grid-view"
         @click="switchComponent(cardComponent)"
       />
     </q-btn-group>
