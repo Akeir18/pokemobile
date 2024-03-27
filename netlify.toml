@@ -1,7 +1,3 @@
-[build]
-  command = "yarn build"
-  publish = "dist/spa"
-
 [[redirects]]
   from = "/*"
   to = "/index.html"
