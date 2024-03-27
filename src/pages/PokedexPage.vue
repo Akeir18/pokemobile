@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <p>{{ store.getNameByLanguage(pokedexId) }}</p>
+    <p class="text-h5">{{ store.getNameByLanguage(pokedexId) }}</p>
     <p>{{ store.getDescriptionByLanguage(pokedexId) }}</p>
     <q-separator inset color="primary" />
 
