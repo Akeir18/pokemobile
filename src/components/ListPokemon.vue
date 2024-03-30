@@ -1,6 +1,11 @@
 <template>
   <q-list bordered separator>
-    <q-item v-for="pokemon in pokemons" :key="pokemon.id">
+    <q-item
+      v-for="pokemon in pokemons"
+      :key="pokemon.id"
+      clickable
+      :to="{ name: 'pokemon', params: { pokemon: pokemon.name } }"
+    >
       <q-item-section avatar>
         <q-avatar>
           <q-img :src="pokemon.sprite" loading="lazy" />
