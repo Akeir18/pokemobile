@@ -1,13 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <the-header @toggleDrawer="toggleLeftDrawer" />
-    <q-drawer
-      show-if-above
-      v-model="leftDrawerOpen"
-      side="left"
-      bordered
-      padding
-    >
+    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <the-navbar />
       <the-language-switcher class="q-mx-md" />
     </q-drawer>
