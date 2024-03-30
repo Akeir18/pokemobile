@@ -22,6 +22,6 @@
   </q-header>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import ThemeSelector from 'src/components/ThemeSelector.vue';
 </script>

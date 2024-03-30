@@ -4,7 +4,7 @@
   </q-chip>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useTypeStore } from 'src/stores/type-store';
 import { toRefs } from 'vue';
