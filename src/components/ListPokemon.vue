@@ -12,14 +12,7 @@
             #{{ pad(pokemon.pokedex, 4) }}
           </span>
           {{ capitalize(pokemon.name) }}
-          <q-chip
-            v-for="type in pokemon.types"
-            :key="type"
-            :class="type"
-            data-cy="chip-type"
-          >
-            {{ getNameByLanguage(type) }}
-          </q-chip>
+          <type-chip v-for="type in pokemon.types" :key="type" :type="type" />
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -27,10 +20,9 @@
 </template>
 
 <script setup>
-import { storeToRefs } from 'pinia';
 import { format } from 'quasar';
-import { useTypeStore } from 'src/stores/type-store';
 import { defineProps, toRefs } from 'vue';
+import TypeChip from 'src/components/TypeChip.vue';
 
 const props = defineProps({
   pokemons: {
@@ -41,7 +33,4 @@ const props = defineProps({
 const { pokemons } = toRefs(props);
 
 const { pad, capitalize } = format;
-
-const store = useTypeStore();
-const { getNameByLanguage } = storeToRefs(store);
 </script>
