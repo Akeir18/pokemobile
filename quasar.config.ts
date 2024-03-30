@@ -213,5 +213,9 @@ module.exports = configure(function (/* ctx */) {
       // extendBexScriptsConf (esbuildConf) {}
       // extendBexManifestJson (json) {}
     },
+
+    supportTS: true,
   };
 });
+
+export {};
