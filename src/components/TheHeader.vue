@@ -13,8 +13,6 @@
         <img src="/favicon.ico" />
       </q-avatar>
 
-      <q-toolbar-title> PokeMobile </q-toolbar-title>
-
       <q-space />
 
       <theme-selector />
