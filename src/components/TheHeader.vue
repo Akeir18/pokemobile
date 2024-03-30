@@ -14,8 +14,14 @@
       </q-avatar>
 
       <q-toolbar-title> PokeMobile </q-toolbar-title>
+
+      <q-space />
+
+      <theme-selector />
     </q-toolbar>
   </q-header>
 </template>
 
-<script setup></script>
+<script setup>
+import ThemeSelector from 'src/components/ThemeSelector.vue';
+</script>
