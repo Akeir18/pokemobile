@@ -1,13 +1,12 @@
 <template>
-  <q-chip :class="type" data-cy="chip-type">
-    {{ getNameByLanguage(type) }}
+  <q-chip :class="props.type" data-cy="chip-type">
+    {{ getNameByLanguage(props.type) }}
   </q-chip>
 </template>
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useTypeStore } from 'src/stores/type-store';
-import { toRefs } from 'vue';
 
 const store = useTypeStore();
 const { getNameByLanguage } = storeToRefs(store);
@@ -18,6 +17,4 @@ const props = defineProps({
     required: true,
   },
 });
-
-const { type } = toRefs(props);
 </script>
