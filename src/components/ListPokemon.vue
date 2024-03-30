@@ -12,8 +12,6 @@
             #{{ pad(pokemon.pokedex, 4) }}
           </span>
           {{ capitalize(pokemon.name) }}
-          <!-- {{ pokemon.types }} -->
-          <!-- {{ store.getNameByLanguage('normal') }} -->
           <q-chip
             v-for="type in pokemon.types"
             :key="type"
