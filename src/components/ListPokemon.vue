@@ -3,7 +3,7 @@
     <q-item v-for="pokemon in pokemons" :key="pokemon.id">
       <q-item-section avatar>
         <q-avatar>
-          <img :src="pokemon.sprite" />
+          <q-img :src="pokemon.sprite" loading="lazy" />
         </q-avatar>
       </q-item-section>
       <q-item-section>
@@ -12,8 +12,6 @@
             #{{ pad(pokemon.pokedex, 4) }}
           </span>
           {{ capitalize(pokemon.name) }}
-          <!-- {{ pokemon.types }} -->
-          <!-- {{ store.getNameByLanguage('normal') }} -->
           <q-chip
             v-for="type in pokemon.types"
             :key="type"
