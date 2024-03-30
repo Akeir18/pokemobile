@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { format } from 'quasar';
 import { defineProps, toRefs } from 'vue';
 import TypeChip from './TypeChip.vue';

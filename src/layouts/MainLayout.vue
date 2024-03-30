@@ -19,7 +19,7 @@
   </q-layout>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 import TheHeader from 'src/components/TheHeader.vue';
 import TheNavbar from 'src/components/TheNavbar.vue';

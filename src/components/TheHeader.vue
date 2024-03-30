@@ -10,7 +10,7 @@
         data-cy="toggle-drawer"
       />
       <q-avatar square>
-        <img src="favicon.ico" />
+        <img src="/favicon.ico" />
       </q-avatar>
 
       <q-toolbar-title> PokeMobile </q-toolbar-title>
@@ -22,6 +22,6 @@
   </q-header>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import ThemeSelector from 'src/components/ThemeSelector.vue';
 </script>
