@@ -3,7 +3,7 @@
     <q-item v-for="pokemon in pokemons" :key="pokemon.id">
       <q-item-section avatar>
         <q-avatar>
-          <img :src="pokemon.sprite" />
+          <q-img :src="pokemon.sprite" loading="lazy" />
         </q-avatar>
       </q-item-section>
       <q-item-section>

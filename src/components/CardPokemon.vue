@@ -5,7 +5,7 @@
       v-for="pokemon in pokemons"
       :key="pokemon.id"
     >
-      <img :src="pokemon.sprite" />
+      <q-img :src="pokemon.sprite" loading="lazy" />
 
       <q-card-section>
         <div class="text-h6 text-center">
