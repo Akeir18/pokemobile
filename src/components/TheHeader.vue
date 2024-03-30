@@ -10,7 +10,7 @@
         data-cy="toggle-drawer"
       />
       <q-avatar square>
-        <img src="favicon.ico" />
+        <img src="/favicon.ico" />
       </q-avatar>
 
       <q-toolbar-title> PokeMobile </q-toolbar-title>
