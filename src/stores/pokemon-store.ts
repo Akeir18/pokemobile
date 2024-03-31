@@ -3,6 +3,7 @@ import { IPokemon } from 'src/interfaces/IPokemon';
 import axios, { AxiosResponse } from 'axios';
 import { Dialog } from 'quasar';
 import { IPokemonList } from 'src/interfaces/IPokemonList';
+import getIdFromUrl from 'src/composables/pokemonId';
 
 // Creating the axios instance to create the interceptors
 const instance = axios.create();
@@ -36,9 +37,9 @@ export const usePokemonStore = defineStore('pokemon', {
   }),
 
   actions: {
-    async loadPokemonList(limit: number, index: number) {
-      if (this.pokemonList.next !== null) {
-        limit = index * limit;
+    async loadPokemonList() {
+      if (this.pokemonList.count === undefined) {
+        const limit = 100000;
         await instance
           .get(`${baseUrl}`, {
             params: {
@@ -47,25 +48,11 @@ export const usePokemonStore = defineStore('pokemon', {
             },
           })
           .then((response: AxiosResponse<IPokemonList>) => {
-            if (this.pokemonList.count === undefined) {
-              this.pokemonList = response.data;
-            } else {
-              this.pokemonList.next = response.data.next;
-              this.pokemonList.results = response.data.results;
-            }
+            this.pokemonList = response.data;
           })
           .catch((error) => {
             console.log(error);
           });
-      }
-    },
-
-    async loadPokemonDataGrouped(offset: number, index: number) {
-      // try {
-      let pokemonId = (index - 1) * offset + 1;
-      offset = pokemonId + offset;
-      for (pokemonId; pokemonId < offset; pokemonId++) {
-        await this.loadPokemonData(pokemonId);
       }
     },
 
@@ -80,6 +67,21 @@ export const usePokemonStore = defineStore('pokemon', {
             console.log(error);
           });
       }
+    },
+
+    async loadPokemonDataByName(pokemonName: string) {
+      await this.loadPokemonList();
+      const pokemonListItem = this.pokemonList.results.find(
+        (item) => item.name.toLowerCase() === pokemonName.toLowerCase()
+      );
+      if (pokemonListItem === undefined) {
+        // TODO Handle this error
+        return false;
+      }
+      const pokemonId = getIdFromUrl(pokemonListItem.url);
+      console.log('🚀 ~ loadPokemonDataByName ~ pokemonId:', pokemonId);
+      await this.loadPokemonData(pokemonId);
+      return this.pokemonData[pokemonId];
     },
   },
 });

@@ -58,12 +58,16 @@ const pokedexStore = usePokedexStore();
 
 // Functions that load the store
 const loadPokemons = async (index: number, done: CallableFunction) => {
-  if (count.value === 0) {
-    done();
-  }
+  // if (count.value === 0) {
+  //   done();
+  // }
 
-  if (count.value !== list.value.length) {
+  console.log('🚀 ~ loadPokemons ~ count.value:', count.value);
+  console.log('🚀 ~ loadPokemons ~ list.value.length:', list.value.length);
+  if (count.value === 0 || count.value !== list.value.length) {
     emit('load', index);
+    console.log('done');
+
     done();
   }
 };
