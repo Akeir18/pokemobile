@@ -217,5 +217,3 @@ module.exports = configure(function (/* ctx */) {
     supportTS: true,
   };
 });
-
-export {};
