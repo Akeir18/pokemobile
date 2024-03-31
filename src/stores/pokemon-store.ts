@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { IPokemon } from 'src/interfaces/IPokemon';
+import { IPokemonResource } from 'src/interfaces/IPokemonResource';
 import axios, { AxiosResponse } from 'axios';
 import { Dialog } from 'quasar';
 import { IPokemonList } from 'src/interfaces/IPokemonList';
@@ -33,7 +33,7 @@ const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
 export const usePokemonStore = defineStore('pokemon', {
   state: () => ({
     pokemonList: <IPokemonList>{},
-    pokemonData: <Array<IPokemon>>{},
+    pokemonData: <Array<IPokemonResource>>{},
   }),
 
   actions: {
@@ -60,7 +60,7 @@ export const usePokemonStore = defineStore('pokemon', {
       if (this.pokemonData[pokemon] === undefined) {
         await instance
           .get(`${baseUrl}${pokemon}`)
-          .then((response: AxiosResponse<IPokemon>) => {
+          .then((response: AxiosResponse<IPokemonResource>) => {
             this.pokemonData[response.data.id] = response.data;
           })
           .catch((error) => {
