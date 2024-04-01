@@ -44,21 +44,28 @@ export const usePokemonStore = defineStore('pokemon', {
 
   getters: {
     getIPokemon: (state) => {
-      return (pokemonName: string): IPokemon => {
-        const pokemonData = state.pokemonData[pokemonName];
-        const pokemonSpecy = state.pokemonSpecy[pokemonName];
+      return (pokemonName: string): IPokemon | undefined => {
+        const pokemonSpeciesName = state.pokemonData[pokemonName].species.name;
+        if (
+          state.pokemonData[pokemonName] !== undefined &&
+          state.pokemonSpecy[pokemonSpeciesName] !== undefined
+        ) {
+          const pokemonData = state.pokemonData[pokemonName];
+          const pokemonSpecy = state.pokemonSpecy[pokemonSpeciesName];
 
-        const pokemonNames: IPokemonNames = {};
-        pokemonSpecy.names.forEach((name) => {
-          pokemonNames[name.language.name] = name.name;
-        });
-        const pokemon: IPokemon = {
-          names: pokemonNames,
-          types: pokemonData.types,
-          sprites: pokemonData.sprites,
-        };
+          const pokemonNames: IPokemonNames = {};
+          pokemonSpecy.names.forEach((name) => {
+            pokemonNames[name.language.name] = name.name;
+          });
+          const pokemon: IPokemon = {
+            names: pokemonNames,
+            types: pokemonData.types,
+            sprites: pokemonData.sprites,
+          };
 
-        return pokemon;
+          return pokemon;
+        }
+        return undefined;
       };
     },
 
