@@ -61,6 +61,8 @@ export const usePokemonStore = defineStore('pokemon', {
             names: pokemonNames,
             types: pokemonData.types,
             sprites: pokemonData.sprites,
+            height: pokemonData.height,
+            weight: pokemonData.weight,
           };
 
           return pokemon;

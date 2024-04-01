@@ -32,6 +32,19 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+
+        <q-tabs v-model="tab">
+          <q-tab name="basic" label="todo.Basic data" />
+        </q-tabs>
+        <q-tab-panels v-model="tab" animated>
+          <q-tab-panel name="basic">
+            <!-- TODO -->
+            todo.Height: {{ (pokemon.height * 10).toFixed(2) }} cm /
+            {{ (pokemon.height * 3.937008).toFixed(2) }} in todo.Weight:
+            {{ (pokemon.weight / 10).toFixed(2) }} Kg /
+            {{ (pokemon.weight / 0.2204623).toFixed(2) }} Lbs
+          </q-tab-panel>
+        </q-tab-panels>
       </q-card>
     </div>
   </q-page>
@@ -40,6 +53,7 @@
 <script setup lang="ts">
 import { toRefs } from 'vue';
 import TypeChip from 'src/components/TypeChip.vue';
+import { ref } from 'vue';
 
 const props = defineProps({
   pokemon: Object,
@@ -47,4 +61,6 @@ const props = defineProps({
 });
 
 const { pokemon, locale } = toRefs(props);
+
+const tab = ref<string>('basic');
 </script>
