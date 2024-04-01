@@ -1,39 +1,6 @@
 <template>
   <q-page>
-    <!-- backgroundImage: pokemon.sprites.front_default -->
-    <div
-      v-if="pokemon !== undefined"
-      class="q-ma-none q-pa-md"
-      :style="{
-        backgroundImage: `url(${pokemon.sprites.front_default})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        backgroundSize: 'cover',
-        minHeight: '100vh',
-      }"
-    >
-      <q-card>
-        <q-item>
-          <q-item-section avatar>
-            <q-avatar>
-              <img :src="pokemon.sprites.front_default" />
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-h4 text-capitalize">
-              {{ pokemon.name }}
-
-              <type-chip
-                v-for="type in pokemon.types"
-                :key="type.type.name"
-                :type="type.type.name"
-              />
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-card>
-    </div>
+    <pokemon-page-render :pokemon="pokemon" :locale="locale" />
   </q-page>
 </template>
 
@@ -42,18 +9,30 @@ import usePokemonStore from 'src/stores/pokemon-store';
 import { ref } from 'vue';
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import TypeChip from 'src/components/TypeChip.vue';
+import PokemonPageRender from 'src/pages/PokemonPageRender.vue';
+import { IPokemon } from 'src/interfaces/IPokemon';
+import { useI18n } from 'vue-i18n';
+import { onBeforeMount } from 'vue';
 
 const route = useRoute();
 
 const store = usePokemonStore();
+const { locale } = useI18n();
 
-const pokemon = ref();
+const pokemonName = ref<string>('');
+const pokemon = ref<IPokemon>();
+
+onBeforeMount(() => {
+  pokemonName.value = route.params.pokemon.toString();
+});
+
 onMounted(async () => {
-  pokemon.value = await store.loadPokemonDataByName(
-    route.params.pokemon.toString()
-  );
+  await store.loadPokemonData(pokemonName.value);
+  const pokemonSpecy = store.pokemonData[pokemonName.value].species.name;
+  console.log('🚀 ~ onMounted ~ pokemonSpecy:', pokemonSpecy);
+  await store.loadPokemonSpecy(pokemonSpecy);
 
-  console.log('🚀 ~ onMounted ~ pokemon:', pokemon);
+  pokemon.value = store.getIPokemon(pokemonName.value);
+  console.log('🚀 ~ onMounted ~ pokemon.value:', pokemon.value);
 });
 </script>
