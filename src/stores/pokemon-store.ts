@@ -4,6 +4,11 @@ import axios, { AxiosResponse } from 'axios';
 import { Dialog } from 'quasar';
 import { IPokemonList } from 'src/interfaces/IPokemonList';
 import getIdFromUrl from 'src/composables/pokemonId';
+import { IPokemonSpecy } from 'src/interfaces/IPokemonSpecy';
+import { useI18n } from 'vue-i18n';
+import { IPokemonResourceArray } from 'src/interfaces/IPokemonResourceArray';
+import { IPokemonSpecyArray } from 'src/interfaces/IPokemonSpecyArray';
+import { IPokemon, IPokemonNames } from 'src/interfaces/IPokemon';
 
 // Creating the axios instance to create the interceptors
 const instance = axios.create();
@@ -29,19 +34,68 @@ instance.interceptors.response.use(
   }
 );
 
-const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
+const baseUrl = 'https://pokeapi.co/api/v2/';
 export const usePokemonStore = defineStore('pokemon', {
   state: () => ({
     pokemonList: <IPokemonList>{},
-    pokemonData: <Array<IPokemonResource>>{},
+    pokemonData: <IPokemonResourceArray>{},
+    pokemonSpecy: <IPokemonSpecyArray>{},
   }),
+
+  getters: {
+    getIPokemon: (state) => {
+      return (pokemonName: string): IPokemon => {
+        const pokemonData = state.pokemonData[pokemonName];
+        const pokemonSpecy = state.pokemonSpecy[pokemonName];
+
+        const pokemonNames: IPokemonNames = {};
+        pokemonSpecy.names.forEach((name) => {
+          pokemonNames[name.language.name] = name.name;
+        });
+        const pokemon: IPokemon = {
+          names: pokemonNames,
+          types: pokemonData.types,
+          sprites: pokemonData.sprites,
+        };
+
+        return pokemon;
+      };
+    },
+
+    getIdByName: (state) => {
+      return (pokemonName: string): number => {
+        const pokemonListItem = state.pokemonList.results.find(
+          (item) => item.name.toLowerCase() === pokemonName.toLowerCase()
+        );
+        if (pokemonListItem === undefined) {
+          // TODO Handle this error
+          return 0;
+        }
+        return getIdFromUrl(pokemonListItem.url);
+      };
+    },
+
+    // TODO GETTER THAT SEARCH BY THE LANGUAGE SO I CAN GET EASILY THE NAME
+    getNameByLanguage: (state) => {
+      return (pokemon: string) => {
+        let pokemonName;
+        if (state.pokemonSpecy[pokemon] !== undefined) {
+          const { locale } = useI18n();
+          pokemonName = Object.values(state.pokemonSpecy[pokemon]?.names).find(
+            (item) => item.language.name === locale.value
+          );
+        }
+        return pokemonName?.name || pokemon;
+      };
+    },
+  },
 
   actions: {
     async loadPokemonList() {
       if (this.pokemonList.count === undefined) {
         const limit = 100000;
         await instance
-          .get(`${baseUrl}`, {
+          .get(`${baseUrl}pokemon/`, {
             params: {
               limit: limit,
               offset: 0,
@@ -56,12 +110,13 @@ export const usePokemonStore = defineStore('pokemon', {
       }
     },
 
-    async loadPokemonData(pokemon: number) {
+    async loadPokemonData(pokemon: string) {
       if (this.pokemonData[pokemon] === undefined) {
+        await this.loadPokemonList();
         await instance
-          .get(`${baseUrl}${pokemon}`)
+          .get(`${baseUrl}pokemon/${pokemon}`)
           .then((response: AxiosResponse<IPokemonResource>) => {
-            this.pokemonData[response.data.id] = response.data;
+            this.pokemonData[response.data.name] = response.data;
           })
           .catch((error) => {
             console.log(error);
@@ -69,20 +124,32 @@ export const usePokemonStore = defineStore('pokemon', {
       }
     },
 
-    async loadPokemonDataByName(pokemonName: string) {
-      await this.loadPokemonList();
-      const pokemonListItem = this.pokemonList.results.find(
-        (item) => item.name.toLowerCase() === pokemonName.toLowerCase()
-      );
-      if (pokemonListItem === undefined) {
-        // TODO Handle this error
-        return false;
+    // async loadPokemonDataByName(pokemonName: string) {
+    //   // TODO
+    //   const pokemonId = this.getIdByName(pokemonName);
+    //   await this.loadPokemonData(pokemonId);
+    //   return this.pokemonData[pokemonId];
+    // },
+
+    async loadPokemonSpecy(pokemon: string) {
+      if (this.pokemonSpecy[pokemon] === undefined) {
+        await this.loadPokemonList();
+        await instance
+          .get(`${baseUrl}pokemon-species/${pokemon}`)
+          .then((response: AxiosResponse<IPokemonSpecy>) => {
+            this.pokemonSpecy[response.data.name] = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
-      const pokemonId = getIdFromUrl(pokemonListItem.url);
-      console.log('🚀 ~ loadPokemonDataByName ~ pokemonId:', pokemonId);
-      await this.loadPokemonData(pokemonId);
-      return this.pokemonData[pokemonId];
     },
+
+    // async loadPokemonSpecyByName(pokemonName: string) {
+    //   const pokemonId = this.getIdByName(pokemonName);
+    //   await this.loadPokemonSpecy(pokemonId);
+    //   return this.pokemonSpecy[pokemonId];
+    // },
   },
 });
 

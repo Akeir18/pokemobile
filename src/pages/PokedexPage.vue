@@ -15,20 +15,16 @@
 
 <script setup lang="ts">
 import DisplayPokemonGroup from 'src/components/DisplayPokemonGroup.vue';
-import { Ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { onMounted } from 'vue';
-import usePokedexStore from 'src/stores/pokedex-store';
 import { PokemonEntry } from 'src/interfaces/IPokedex';
-import getIdFromUrl from 'src/composables/pokemonId';
+import usePokedexStore from 'src/stores/pokedex-store';
 import usePokemonStore from 'src/stores/pokemon-store';
-import { computed } from 'vue';
-import { shallowRef } from 'vue';
+import { Ref, computed, onMounted, shallowRef } from 'vue';
+import { useRoute } from 'vue-router';
 
 const pokedexId = parseInt(useRoute().params.id as string);
 const store = usePokedexStore();
 const pokemonStore = usePokemonStore();
-const pokemonList = <Ref<Array<number>>>shallowRef([]);
+const pokemonList = <Ref<Array<string>>>shallowRef([]);
 const pokemonCount = computed(() => {
   if (store.pokedexData[pokedexId] !== undefined) {
     return store.pokedexData[pokedexId].pokemon_entries.length;
@@ -39,15 +35,16 @@ const pokemonCount = computed(() => {
 // Functions that load the store
 const loadPokemons = async (index: number) => {
   if (store.pokedexData[pokedexId] !== undefined) {
+    const offset = 10;
     const iterationArray = store.pokedexData[pokedexId].pokemon_entries.slice(
       0,
-      10 * index
+      offset * index
     );
     pokemonList.value = [];
     iterationArray.forEach((pokemon: PokemonEntry) => {
-      const id = getIdFromUrl(pokemon.pokemon_species.url);
-      pokemonStore.loadPokemonData(id);
-      pokemonList.value.push(id);
+      pokemonStore.loadPokemonData(pokemon.pokemon_species.name);
+      pokemonStore.loadPokemonSpecy(pokemon.pokemon_species.name);
+      pokemonList.value.push(pokemon.pokemon_species.name);
     });
   }
 };
