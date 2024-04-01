@@ -63,6 +63,8 @@ export const usePokemonStore = defineStore('pokemon', {
             sprites: pokemonData.sprites,
             height: pokemonData.height,
             weight: pokemonData.weight,
+            baseHappiness: pokemonSpecy.base_happiness,
+            catchRate: pokemonSpecy.capture_rate,
           };
 
           return pokemon;

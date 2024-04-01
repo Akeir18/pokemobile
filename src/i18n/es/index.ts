@@ -10,4 +10,10 @@ export default {
   pokemonNotFound: 'No se han encontrado pokémon',
   typeNotFound: 'No se han encontrado tipos',
   pokedexNotFound: 'No se han encontrado pokedex',
+  basicData: 'Datos básicos',
+  dimensions: 'Dimensiones',
+  height: 'Altura',
+  weight: 'Peso',
+  catchRate: 'Probabilidad de atrapar',
+  baseHappiness: 'Felicidad base',
 };

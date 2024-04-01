@@ -33,16 +33,32 @@
           </q-item-section>
         </q-item>
 
-        <q-tabs v-model="tab">
-          <q-tab name="basic" label="todo.Basic data" />
+        <q-tabs v-model="tab" no-caps>
+          <q-tab name="basic" :label="$t('basicData')" />
         </q-tabs>
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="basic">
             <!-- TODO -->
-            todo.Height: {{ (pokemon.height * 10).toFixed(2) }} cm /
-            {{ (pokemon.height * 3.937008).toFixed(2) }} in todo.Weight:
-            {{ (pokemon.weight / 10).toFixed(2) }} Kg /
-            {{ (pokemon.weight / 0.2204623).toFixed(2) }} Lbs
+            <p class="text-bold">{{ $t('dimensions') }}</p>
+            <p>
+              {{ $t('height') }}: {{ (pokemon.height * 10).toFixed(2) }} cm /
+              {{ (pokemon.height * 3.937008).toFixed(2) }} in
+            </p>
+            <p>
+              {{ $t('weight') }}: {{ (pokemon.weight / 10).toFixed(2) }} Kg /
+              {{ (pokemon.weight / 0.2204623).toFixed(2) }} Lbs
+            </p>
+            <p>
+              {{ $t('catchRate') }}:
+              {{ ((pokemon.catchRate / 255) * 100).toFixed(2) }} %
+            </p>
+            <p>
+              {{ $t('baseHappiness') }}:
+              {{ ((pokemon.baseHappiness / 255) * 100).toFixed(2) }} %
+            </p>
+
+            <!-- <q-separator />
+            {{ pokemon }} -->
           </q-tab-panel>
         </q-tab-panels>
       </q-card>

@@ -6,6 +6,8 @@ export interface IPokemon {
   sprites: Sprites;
   height: number;
   weight: number;
+  baseHappiness: number;
+  catchRate: number;
 }
 
 export interface IPokemonNames {
