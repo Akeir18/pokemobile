@@ -46,7 +46,7 @@ import {
 
 const props = defineProps({
   count: { type: Number, required: true },
-  list: { type: Array<number>, required: true },
+  list: { type: Array<string>, required: true },
   pokedexId: { type: Number, required: false, default: null },
 });
 const { count, list, pokedexId } = toRefs(props);
@@ -58,12 +58,15 @@ const pokedexStore = usePokedexStore();
 
 // Functions that load the store
 const loadPokemons = async (index: number, done: CallableFunction) => {
-  if (count.value === 0) {
-    done();
-  }
+  // if (count.value === 0) {
+  //   done();
+  // }
 
-  if (count.value !== list.value.length) {
+  console.log('🚀 ~ loadPokemons ~ list.value.length:', list.value.length);
+  console.log('🚀 ~ loadPokemons ~ count.value:', count.value);
+  if (count.value === 0 || count.value !== list.value.length) {
     emit('load', index);
+
     done();
   }
 };
@@ -71,27 +74,30 @@ const loadPokemons = async (index: number, done: CallableFunction) => {
 // Functions that load the pokemon component
 const pokemons = computed(() => {
   let pokemon = <Array<IPokemonListItem>>[];
-  for (const pokemonId of list.value) {
-    if (store.pokemonData[pokemonId] !== undefined) {
+  for (const pokemonName of list.value) {
+    if (
+      store.pokemonData[pokemonName] !== undefined &&
+      store.pokemonSpecy[pokemonName] !== undefined
+    ) {
       const types = <Array<string>>[];
       // In order to get only the name of the type to make it easy to use it on the render site we're gonna take only the names
-      store.pokemonData[pokemonId].types.forEach((type) => {
+      store.pokemonData[pokemonName].types.forEach((type) => {
         if (typeStore.typeData[type.type.name] !== undefined) {
           types.push(type.type.name);
         }
       });
       // Getting the needed info only
       pokemon.push({
-        id: store.pokemonData[pokemonId].id,
+        id: store.pokemonData[pokemonName].id,
         pokedex:
           pokedexId.value !== null
             ? pokedexStore.getPokedexNumber(
                 pokedexId.value,
-                store.pokemonData[pokemonId].name
+                store.pokemonData[pokemonName].name
               )
             : 0,
-        name: store.pokemonData[pokemonId].name,
-        sprite: store.pokemonData[pokemonId].sprites.front_default,
+        name: store.pokemonData[pokemonName].name,
+        sprite: store.pokemonData[pokemonName].sprites.front_default,
         types: types,
       });
     }

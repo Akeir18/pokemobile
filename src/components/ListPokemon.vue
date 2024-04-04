@@ -1,6 +1,11 @@
 <template>
   <q-list bordered separator>
-    <q-item v-for="pokemon in pokemons" :key="pokemon.id">
+    <q-item
+      v-for="pokemon in pokemons"
+      :key="pokemon.id"
+      clickable
+      :to="{ name: 'pokemon', params: { pokemon: pokemon.name } }"
+    >
       <q-item-section avatar>
         <q-avatar>
           <q-img :src="pokemon.sprite" loading="lazy" />
@@ -11,7 +16,7 @@
           <span v-if="pokemon.pokedex !== 0">
             #{{ pad(pokemon.pokedex, 4) }}
           </span>
-          {{ capitalize(pokemon.name) }}
+          {{ getNameByLanguage(pokemon.name) }}
           <type-chip v-for="type in pokemon.types" :key="type" :type="type" />
         </q-item-label>
       </q-item-section>
@@ -23,6 +28,8 @@
 import { format } from 'quasar';
 import { defineProps, toRefs } from 'vue';
 import TypeChip from 'src/components/TypeChip.vue';
+import usePokemonStore from 'src/stores/pokemon-store';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps({
   pokemons: {
@@ -32,5 +39,8 @@ const props = defineProps({
 });
 const { pokemons } = toRefs(props);
 
-const { pad, capitalize } = format;
+const store = usePokemonStore();
+const { getNameByLanguage } = storeToRefs(store);
+
+const { pad } = format;
 </script>

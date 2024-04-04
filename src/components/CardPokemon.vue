@@ -4,6 +4,7 @@
       class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 col-xxl-1"
       v-for="pokemon in pokemons"
       :key="pokemon.id"
+      @click="goToPokemon(pokemon.name)"
     >
       <q-img :src="pokemon.sprite" loading="lazy" />
 
@@ -12,7 +13,7 @@
           <span v-if="pokemon.pokedex !== 0">
             #{{ pad(pokemon.pokedex, 4) }}
           </span>
-          {{ capitalize(pokemon.name) }}
+          {{ getNameByLanguage(pokemon.name) }}
         </div>
         <div class="text-subtitle2 text-center">
           <type-chip v-for="type in pokemon.types" :key="type" :type="type" />
@@ -25,7 +26,10 @@
 <script lang="ts" setup>
 import { format } from 'quasar';
 import { defineProps, toRefs } from 'vue';
+import { useRouter } from 'vue-router';
 import TypeChip from './TypeChip.vue';
+import { storeToRefs } from 'pinia';
+import usePokemonStore from 'src/stores/pokemon-store';
 
 const props = defineProps({
   pokemons: {
@@ -34,5 +38,15 @@ const props = defineProps({
   },
 });
 const { pokemons } = toRefs(props);
-const { pad, capitalize } = format;
+
+const store = usePokemonStore();
+const { getNameByLanguage } = storeToRefs(store);
+
+const router = useRouter();
+
+const { pad } = format;
+
+const goToPokemon = (pokemonName: string) => {
+  router.push({ name: 'pokemon', params: { pokemon: pokemonName } });
+};
 </script>

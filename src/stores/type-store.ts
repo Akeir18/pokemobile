@@ -39,11 +39,16 @@ export const useTypeStore = defineStore('counter', {
   getters: {
     // TODO GETTER THAT SEARCH BY THE LANGUAGE SO I CAN GET EASILY THE NAME
     getNameByLanguage: (state) => {
+      console.log(state.typeData);
+
       return (type: string) => {
-        const { locale } = useI18n();
-        const typeName = Object.values(state.typeData[type]?.names).find(
-          (item) => item.language.name === locale.value
-        );
+        let typeName;
+        if (state.typeData[type] !== undefined) {
+          const { locale } = useI18n();
+          typeName = Object.values(state.typeData[type]?.names).find(
+            (item) => item.language.name === locale.value
+          );
+        }
         return typeName?.name || type;
       };
     },
