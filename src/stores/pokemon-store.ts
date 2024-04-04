@@ -52,7 +52,6 @@ export const usePokemonStore = defineStore('pokemon', {
         ) {
           const pokemonData = state.pokemonData[pokemonName];
           const pokemonSpecy = state.pokemonSpecy[pokemonSpeciesName];
-
           const pokemonNames: IPokemonNames = {};
           pokemonSpecy.names.forEach((name) => {
             pokemonNames[name.language.name] = name.name;
