@@ -16,4 +16,17 @@ export default {
   weight: 'Peso',
   catchRate: 'Probabilidad de atrapar',
   baseHappiness: 'Felicidad base',
+  isBaby: 'Es bebé | No es un bebé',
+  experienceGained: 'Experiencia obtenida',
+  defaultPokemon: 'Pokémon por defecto | Pokemon no por defecto',
+  pokemonGeneral: 'Datos Pokémon',
+  femaleRate: 'Probabilidad de hembra',
+  maleRate: 'Probabilidad de macho',
+  hasVisualChanges:
+    'Hay cambios visuales entre géneros | No hay cambios visuales entre géneros',
+  hasFormChange:
+    'Tiene cambios de forma y puede cambiar entre ellos | No tiene cambios de forma',
+  hatchCycles: 'Ciclos de incubación:',
+  color: 'Color',
+  habitat: 'Habitat',
 };
