@@ -20,6 +20,7 @@ export interface IPokemon {
   formChange: boolean;
   hatchCycles: number;
   isBaby: boolean;
+  color: string;
 }
 
 export interface IPokemonNames {

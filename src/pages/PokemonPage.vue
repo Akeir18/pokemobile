@@ -31,8 +31,8 @@ onMounted(async () => {
   const pokemonSpecy = store.pokemonData[pokemonName.value].species.name;
   console.log('🚀 ~ onMounted ~ pokemonSpecy:', pokemonSpecy);
   await store.loadPokemonSpecy(pokemonSpecy);
-
+  const pokemonColor = store.pokemonSpecy[pokemonName.value].color.name;
+  await store.loadPokemonColor(pokemonColor);
   pokemon.value = store.getIPokemon(pokemonName.value);
-  console.log('🚀 ~ onMounted ~ pokemon.value:', pokemon.value);
 });
 </script>
