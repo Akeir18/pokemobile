@@ -79,15 +79,23 @@
       :label="`${$t('hatchCycles')}: ${pokemon.hatchCycles}`"
       icon="egg"
     />
+
+    <list-item-avatar
+      :label="store.getColorByLanguage(pokemon.color)"
+      icon="palette"
+    />
   </q-list>
 </template>
 
 <script setup lang="ts">
 import { toRefs } from 'vue';
 import ListItemAvatar from './ListItemAvatar.vue';
+import usePokemonStore from 'src/stores/pokemon-store';
 
 const props = defineProps({
   pokemon: { type: Object, required: true },
 });
 const { pokemon } = toRefs(props);
+
+const store = usePokemonStore();
 </script>

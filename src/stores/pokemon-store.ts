@@ -5,10 +5,12 @@ import { Dialog } from 'quasar';
 import { IPokemonList } from 'src/interfaces/IPokemonList';
 import getIdFromUrl from 'src/composables/pokemonId';
 import { IPokemonSpecy } from 'src/interfaces/IPokemonSpecy';
-import { useI18n } from 'vue-i18n';
 import { IPokemonResourceArray } from 'src/interfaces/IPokemonResourceArray';
 import { IPokemonSpecyArray } from 'src/interfaces/IPokemonSpecyArray';
 import { IPokemon, IPokemonNames } from 'src/interfaces/IPokemon';
+import IPokemonColor from 'src/interfaces/IPokemonColor';
+import { IPokemonColorArray } from 'src/interfaces/IPokemonColorArray';
+import useLocaleStore from './locale-store';
 
 // Creating the axios instance to create the interceptors
 const instance = axios.create();
@@ -40,12 +42,13 @@ export const usePokemonStore = defineStore('pokemon', {
     pokemonList: <IPokemonList>{},
     pokemonData: <IPokemonResourceArray>{},
     pokemonSpecy: <IPokemonSpecyArray>{},
+    pokemonColor: <IPokemonColorArray>{},
   }),
 
   getters: {
     getIPokemon: (state) => {
       return (pokemonName: string): IPokemon | undefined => {
-        const pokemonSpeciesName = state.pokemonData[pokemonName].species.name;
+        const pokemonSpeciesName = state.pokemonData[pokemonName]?.species.name;
         if (
           state.pokemonData[pokemonName] !== undefined &&
           state.pokemonSpecy[pokemonSpeciesName] !== undefined
@@ -76,6 +79,7 @@ export const usePokemonStore = defineStore('pokemon', {
             formChange: pokemonSpecy.forms_switchable,
             hatchCycles: pokemonSpecy.hatch_counter,
             isBaby: pokemonSpecy.is_baby,
+            color: pokemonSpecy.color.name,
           };
 
           return pokemon;
@@ -99,15 +103,28 @@ export const usePokemonStore = defineStore('pokemon', {
 
     // TODO GETTER THAT SEARCH BY THE LANGUAGE SO I CAN GET EASILY THE NAME
     getNameByLanguage: (state) => {
-      return (pokemon: string) => {
+      return (pokemon: string): string => {
         let pokemonName;
         if (state.pokemonSpecy[pokemon] !== undefined) {
-          const { locale } = useI18n();
+          const locale = useLocaleStore().locale;
           pokemonName = Object.values(state.pokemonSpecy[pokemon]?.names).find(
-            (item) => item.language.name === locale.value
+            (item) => item.language.name === locale
           );
         }
         return pokemonName?.name || pokemon;
+      };
+    },
+
+    getColorByLanguage: (state) => {
+      return (color: string): string => {
+        const locale = useLocaleStore().locale;
+        let pokemonColor;
+        if (state.pokemonColor[color] !== undefined) {
+          pokemonColor = Object.values(state.pokemonColor[color]?.names).find(
+            (item) => item.language.name === locale
+          );
+        }
+        return pokemonColor?.name || color;
       };
     },
   },
@@ -167,11 +184,18 @@ export const usePokemonStore = defineStore('pokemon', {
       }
     },
 
-    // async loadPokemonSpecyByName(pokemonName: string) {
-    //   const pokemonId = this.getIdByName(pokemonName);
-    //   await this.loadPokemonSpecy(pokemonId);
-    //   return this.pokemonSpecy[pokemonId];
-    // },
+    async loadPokemonColor(pokemon: string) {
+      if (this.pokemonColor[pokemon] === undefined) {
+        await instance
+          .get(`${baseUrl}pokemon-color/${pokemon}`)
+          .then((response: AxiosResponse<IPokemonColor>) => {
+            this.pokemonColor[pokemon] = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
   },
 });
 
