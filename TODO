@@ -1,6 +1,17 @@
-All pokemon page:
-  ☐ Fix slow loading @started(24-04-18 13:53)
-  ☐ Add develop hook
+On this version:
+  General:
+    ☐ Make a better readme
 
-Pokemon page:
-  ✔ Get the color of the pokemon and then get the translated color @started(24-04-18 13:35) @done(24-04-18 13:42) @lasted(7m15s)s
+  All pokemon page:
+    ☐ Fix slow loading @started(24-04-18 13:53)
+    ✔ Add develop hook @done(24-04-20 08:37)
+
+  Pokemon page:
+    ✔ Get the color of the pokemon and then get the translated color @started(24-04-18 13:35) @done(24-04-18 13:42) @lasted(7m15s)
+    ☐ Remove the image of the background due it's not shown
+
+In future versions:
+  All pokemon page:
+
+  Pokemon page:
+    ☐ At the gender rate, add a bar to make it more visual
