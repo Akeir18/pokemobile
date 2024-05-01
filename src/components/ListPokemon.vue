@@ -13,13 +13,9 @@
         <q-skeleton type="QAvatar" v-else />
       </q-item-section>
       <q-item-section>
-        <q-item-label v-if="pokemon.name !== getNameByLanguage(pokemon.name)">
-          <span v-if="pokemon.pokedex !== 0">
-            #{{ pad(pokemon.pokedex, 4) }}
-          </span>
-          {{ getNameByLanguage(pokemon.name) }}
+        <q-item-label>
+          <pokedex-name :pokedex="pokemon.pokedex" :name="pokemon.name" />
         </q-item-label>
-        <q-skeleton type="text" v-else />
         <q-item-label>
           <type-chip v-for="type in pokemon.types" :key="type" :type="type" />
         </q-item-label>
@@ -29,11 +25,9 @@
 </template>
 
 <script lang="ts" setup>
-import { format } from 'quasar';
 import { defineProps, toRefs } from 'vue';
 import TypeChip from 'src/components/TypeChip.vue';
-import usePokemonStore from 'src/stores/pokemon-store';
-import { storeToRefs } from 'pinia';
+import PokedexName from 'src/components/PokedexName.vue';
 
 const props = defineProps({
   pokemons: {
@@ -42,9 +36,4 @@ const props = defineProps({
   },
 });
 const { pokemons } = toRefs(props);
-
-const store = usePokemonStore();
-const { getNameByLanguage } = storeToRefs(store);
-
-const { pad } = format;
 </script>
