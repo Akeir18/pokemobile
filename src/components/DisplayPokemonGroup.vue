@@ -100,6 +100,14 @@ const pokemons = computed(() => {
         sprite: store.pokemonData[pokemonName].sprites.front_default,
         types: types,
       });
+    } else {
+      pokemon.push({
+        id: 0,
+        pokedex: 0,
+        name: pokemonName,
+        sprite: '',
+        types: [''],
+      });
     }
   }
   return pokemon;
