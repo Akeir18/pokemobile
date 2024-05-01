@@ -38,9 +38,9 @@ const loadPokemons = async (index: number) => {
   // Looping through the gotten pokemons to get the info of them
   iterationArray.forEach(async (pokemon) => {
     // const id = getIdFromUrl(pokemon.url);
+    pokemonList.value.push(pokemon.name);
     store.loadPokemonData(pokemon.name);
     store.loadPokemonSpecy(pokemon.name);
-    pokemonList.value.push(pokemon.name);
   });
 };
 </script>
