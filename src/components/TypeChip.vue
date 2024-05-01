@@ -1,11 +1,12 @@
 <template>
   <q-chip
-    v-if="store.typeData !== undefined"
+    v-if="store.typeData !== undefined && getNameByLanguage(props.type) !== ''"
     :class="props.type"
     data-cy="chip-type"
   >
     {{ getNameByLanguage(props.type) }}
   </q-chip>
+  <q-skeleton type="QChip" v-else />
 </template>
 
 <script lang="ts" setup>
