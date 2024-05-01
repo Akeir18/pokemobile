@@ -7,16 +7,20 @@
       :to="{ name: 'pokemon', params: { pokemon: pokemon.name } }"
     >
       <q-item-section avatar>
-        <q-avatar>
+        <q-avatar v-if="pokemon.sprite !== ''">
           <q-img :src="pokemon.sprite" loading="lazy" />
         </q-avatar>
+        <q-skeleton type="QAvatar" v-else />
       </q-item-section>
       <q-item-section>
-        <q-item-label>
+        <q-item-label v-if="pokemon.name !== getNameByLanguage(pokemon.name)">
           <span v-if="pokemon.pokedex !== 0">
             #{{ pad(pokemon.pokedex, 4) }}
           </span>
           {{ getNameByLanguage(pokemon.name) }}
+        </q-item-label>
+        <q-skeleton type="text" v-else />
+        <q-item-label>
           <type-chip v-for="type in pokemon.types" :key="type" :type="type" />
         </q-item-label>
       </q-item-section>
